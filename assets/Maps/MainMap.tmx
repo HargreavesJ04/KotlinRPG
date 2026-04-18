@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="1">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="5">
  <tileset firstgid="1" name="Dungeon_Tileset" tilewidth="16" tileheight="16" tilecount="100" columns="10">
-  <image source="../Tilemap/Dungeon_Tileset.png" width="160" height="160"/>
+  <image source="Dungeon_Tileset.png" width="160" height="160"/>
  </tileset>
- <layer id="1" name="Tile Layer 1" width="30" height="20">
+ <layer id="1" name="Tile Layer 1" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJzFlMEOgjAQRMtFEC9W8WKFk2f///MsoZtMhtkCXiSZGKjd19lO24TlSUUxq83qss5ZfRlvYcxTV/lutaxeU8Zm5qv88n+5ThTyxhT/JLij8Mz1kqjVwxgqinrGjWHtmT1grTas/XS09qmsBecwN4W15ySY2A/03Ir5M3eAPd3L9ZhTxXN02LwfyOVeqxo2LwXfM/db5dm4mGPcY2Ti/ERM9o09Yu5AXNw3j4t+MKsqb9i3W9a9MCfBTRUunwU+LyoPKhvcZ/RVyxJ7ruWB3y1nR7h2LyiuOkOcU2Qf4Q7AwF5750flmM8vr1NxzbO6P/cwhw0u56V2B9T2pCcmfsd7Q+XB82xc735iIXN+v25wR6eu1fD2QwnX8PyB63lieeuZx95Zl7A8NdZeT3v1yXqE/zxf9v8rFQ==
+   eJxjZGBgMEHCpmg0PjE2IOYGYnYSMAcQcwIxFxALQPULkoCFgFgYiEWQ9EuTgGWAWBaI5ZD0j7p/ZLt/IO0XpSD8pIBYE4i1gFgbidYBYl00ProcCOsBMQB5yRP1
   </data>
  </layer>
- <layer id="2" name="Tile Layer 2" width="30" height="20">
-  <data encoding="base64" compression="zlib">
-   eJztzTcOwkAUQEFfhtAB7ggNocMgkXPm/mdgLuG/FPukqV9R5FK2Ys2GLTv2HDhy4lzD98KVG3cePHnx5sO3hm/KxkyYMgv8zqlYsAz8pqpBkxbtwG+HLj3KwG+fAUNGgd9cLvff/QB9awuV
-  </data>
- </layer>
+ <objectgroup id="2" name="Walls">
+  <object id="1" x="0" y="-2" width="14" height="256"/>
+  <object id="2" x="237" y="-1" width="19" height="259"/>
+  <object id="3" x="13" y="-3" width="227" height="20"/>
+  <object id="4" x="16" y="238" width="222" height="16"/>
+ </objectgroup>
 </map>

@@ -1,7 +1,6 @@
 package io.github.HargreavesJ04
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Pixmap
@@ -22,36 +21,36 @@ class FirstScreen(val game: Main) : KtxScreen {
     private val batch = SpriteBatch()
 
     private val levelManager = LevelHandler()
-
     private val player = Player(x = 100f, y = 100f, TeamColor.BLUE)
 
     private val stage = Stage(ScreenViewport())
-
-    private val customTouchpadStyle = TouchpadStyle().apply {
-        val bg = Pixmap(200, 200, Pixmap.Format.RGBA8888)
-        bg.setColor(1f, 1f, 1f, 0.2f)
-        bg.fillCircle(100, 100, 100)
-        background = TextureRegionDrawable(Texture(bg))
-        bg.dispose()
-
-        val knobPix = Pixmap(50, 50, Pixmap.Format.RGBA8888)
-        knobPix.setColor(1f, 1f, 1f, 0.8f)
-        knobPix.fillCircle(25, 25, 25)
-        knob = TextureRegionDrawable(Texture(knobPix))
-        knobPix.dispose()
-    }
-
-    private val touchpad = Touchpad(10f, customTouchpadStyle)
-
     private val playerTexture = Texture("Textures/player.png")
+    private val touchpad = createTouchpad()
 
     init {
         camera.position.set(viewport.worldWidth / 2, viewport.worldHeight / 2, 0f)
-
-        touchpad.setBounds(50f, 50f, 250f, 250f)
         stage.addActor(touchpad)
-
         Gdx.input.inputProcessor = stage
+    }
+
+    private fun createTouchpad(): Touchpad {
+        val customTouchpadStyle = TouchpadStyle().apply {
+            val bg = Pixmap(200, 200, Pixmap.Format.RGBA8888)
+            bg.setColor(1f, 1f, 1f, 0.2f)
+            bg.fillCircle(100, 100, 100)
+            background = TextureRegionDrawable(Texture(bg))
+            bg.dispose()
+
+            val knobPix = Pixmap(50, 50, Pixmap.Format.RGBA8888)
+            knobPix.setColor(1f, 1f, 1f, 0.8f)
+            knobPix.fillCircle(25, 25, 25)
+            knob = TextureRegionDrawable(Texture(knobPix))
+            knobPix.dispose()
+        }
+
+        val pad = Touchpad(10f, customTouchpadStyle)
+        pad.setBounds(50f, 50f, 250f, 250f)
+        return pad
     }
 
     override fun render(delta: Float) {
@@ -61,7 +60,7 @@ class FirstScreen(val game: Main) : KtxScreen {
         var inputX = touchpad.knobPercentX
         var inputY = touchpad.knobPercentY
 
-        player.move(delta, inputX, inputY)
+        player.move(delta, inputX, inputY, levelManager.walls)
 
         camera.position.set(player.x, player.y, 0f)
         camera.update()

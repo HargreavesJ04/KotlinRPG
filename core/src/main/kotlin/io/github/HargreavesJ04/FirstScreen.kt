@@ -14,7 +14,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import ktx.app.KtxScreen
 
-class FirstScreen(val game: Main) : KtxScreen {
+class FirstScreen(val game: Main) : KtxScreen
+{
+    private val networkClient = NetworkClient()
 
     private val camera = OrthographicCamera()
     private val viewport = FitViewport(400f, 200f, camera)
@@ -27,10 +29,16 @@ class FirstScreen(val game: Main) : KtxScreen {
     private val playerTexture = Texture("Textures/player.png")
     private val touchpad = createTouchpad()
 
-    init {
+    init
+    {
         camera.position.set(viewport.worldWidth / 2, viewport.worldHeight / 2, 0f)
         stage.addActor(touchpad)
         Gdx.input.inputProcessor = stage
+    Thread{
+        println("Attempting to connect to server...")
+        networkClient.connectToServer()
+    }.start()
+
     }
 
     private fun createTouchpad(): Touchpad
@@ -88,10 +96,13 @@ class FirstScreen(val game: Main) : KtxScreen {
     override fun resume() {}
     override fun hide() {}
 
-    override fun dispose() {
+    override fun dispose()
+    {
         batch.dispose()
         playerTexture.dispose()
         levelManager.dispose()
         stage.dispose()
+
+        networkClient.dispose()
     }
 }

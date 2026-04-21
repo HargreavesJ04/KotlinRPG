@@ -17,7 +17,7 @@ import ktx.app.KtxScreen
 class FirstScreen(val game: Main) : KtxScreen {
 
     private val camera = OrthographicCamera()
-    private val viewport = FitViewport(800f, 480f, camera)
+    private val viewport = FitViewport(400f, 200f, camera)
     private val batch = SpriteBatch()
 
     private val levelManager = LevelHandler()
@@ -33,7 +33,8 @@ class FirstScreen(val game: Main) : KtxScreen {
         Gdx.input.inputProcessor = stage
     }
 
-    private fun createTouchpad(): Touchpad {
+    private fun createTouchpad(): Touchpad
+    {
         val customTouchpadStyle = TouchpadStyle().apply {
             val bg = Pixmap(200, 200, Pixmap.Format.RGBA8888)
             bg.setColor(1f, 1f, 1f, 0.2f)
@@ -53,7 +54,8 @@ class FirstScreen(val game: Main) : KtxScreen {
         return pad
     }
 
-    override fun render(delta: Float) {
+    override fun render(delta: Float)
+    {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 

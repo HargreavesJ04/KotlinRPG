@@ -2,15 +2,25 @@ package io.github.HargreavesJ04
 
 import com.badlogic.gdx.math.Rectangle
 
+
+
 enum class TeamColor {
-    BLUE, ORANGE
+    BLUE, ORANGE;
+
+    companion object {
+
+        fun fromInt(value: Int) = entries.getOrNull(value) ?: BLUE
+    }
 }
+
+
 
 class Player(var x: Float, var y: Float, val team: TeamColor) {
     val size = 16f
     val speed = 100f
 
     val bounds = Rectangle(x, y, size, size)
+
 
     fun move(delta: Float, movePercentX: Float, movePercentY: Float, walls: List<Rectangle>)
     {

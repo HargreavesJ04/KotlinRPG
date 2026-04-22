@@ -3,7 +3,6 @@ package io.github.HargreavesJ04
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -15,60 +14,75 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport
 import ktx.app.KtxScreen
 
 class FirstScreen(val game: Main) : KtxScreen {
-    private val networkClient = NetworkClient()
+
+    //utils
     private val camera = OrthographicCamera()
     private val viewport = FitViewport(400f, 200f, camera)
     private val batch = SpriteBatch()
+    private val stage = Stage(ScreenViewport())
+
+    //Networking
+    private val networkClient = NetworkClient()
+
+    //Game state
     private val levelManager = LevelHandler()
     private val player = Player(x = 100f, y = 100f, TeamColor.BLUE)
-    private val stage = Stage(ScreenViewport())
+
+    //textures
     private val playerTexture = Texture("Textures/player.png")
+    private val player2Texture = Texture("Textures/Player2.png")
+    private val padBg = Texture("Textures/Pan_Blue_Circle.png")
+    private val padKnob = Texture("Textures/HealthPotion.png")
+
+    //UI
     private val touchpad = createTouchpad()
 
-    init {
-        camera.position.set(viewport.worldWidth / 2, viewport.worldHeight / 2, 0f)
+    init // Initializes UI input and starts the background server connection
+    {
         stage.addActor(touchpad)
         Gdx.input.inputProcessor = stage
+
         Thread {
             networkClient.connectToServer()
         }.start()
     }
 
-    private fun createTouchpad(): Touchpad {
+    private fun createTouchpad(): Touchpad
+    {
         val customTouchpadStyle = TouchpadStyle().apply {
-            val bg = Pixmap(200, 200, Pixmap.Format.RGBA8888)
-            bg.setColor(1f, 1f, 1f, 0.2f)
-            bg.fillCircle(100, 100, 100)
-            background = TextureRegionDrawable(Texture(bg))
-            bg.dispose()
-            val knobPix = Pixmap(50, 50, Pixmap.Format.RGBA8888)
-            knobPix.setColor(1f, 1f, 1f, 0.8f)
-            knobPix.fillCircle(25, 25, 25)
-            knob = TextureRegionDrawable(Texture(knobPix))
-            knobPix.dispose()
+
+            background = TextureRegionDrawable(padBg)
+            knob = TextureRegionDrawable(padKnob)
         }
+
         val pad = Touchpad(10f, customTouchpadStyle)
         pad.setBounds(50f, 50f, 250f, 250f)
         return pad
     }
 
-    override fun render(delta: Float) {
+    override fun render(delta: Float)
+    {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT) //erases the previous sprite on screen so you dont have a ghost effect
 
         val inputX = touchpad.knobPercentX
         val inputY = touchpad.knobPercentY
 
-        if (inputX != 0f || inputY != 0f) {
-            networkClient.client.sendUDP(MoveInputPacket(inputX, inputY))
+        if (Math.abs(inputX) > 0.05f || Math.abs(inputY) > 0.05f) //deadzone that wont move if the stick moves below 5%
+        {
+            networkClient.client.sendUDP(MoveInputPacket(inputX, inputY)) //tells the server that the player is trying to move
         }
 
         val myServerPos = networkClient.networkPlayers[networkClient.client.id]
-        if (myServerPos != null) {
+
+        if (myServerPos != null) //ensures players  local position lines up with the servers cooridantes so player stays in sync
+        {
             player.x = myServerPos.x
             player.y = myServerPos.y
         }
 
+
+        //camera logic to keep it centered to player and follows them
         camera.position.set(player.x, player.y, 0f)
         camera.update()
         levelManager.render(camera)
@@ -76,11 +90,19 @@ class FirstScreen(val game: Main) : KtxScreen {
         batch.projectionMatrix = camera.combined
         batch.begin()
 
-        batch.draw(playerTexture, player.x, player.y, player.size, player.size)
 
-        for (netPlayer in networkClient.networkPlayers.values) {
-            if (netPlayer.playerId != networkClient.client.id) {
-                batch.draw(playerTexture, netPlayer.x, netPlayer.y, player.size, player.size)
+        //draws player with the correct texture and properties
+        val myColor = TeamColor.fromInt(myServerPos?.PlayerTextureID ?: 0)
+        val myTex = if (myColor == TeamColor.ORANGE) player2Texture else playerTexture
+        batch.draw(myTex, player.x, player.y, player.size, player.size)
+
+        for (netPlayer in networkClient.networkPlayers.values)
+        {
+            if (netPlayer.playerId != networkClient.client.id)
+            {
+                val otherColor = TeamColor.fromInt(netPlayer.PlayerTextureID)
+                val otherTex = if (otherColor == TeamColor.ORANGE) player2Texture else playerTexture
+                batch.draw(otherTex, netPlayer.x, netPlayer.y, player.size, player.size)
             }
         }
 
@@ -89,21 +111,27 @@ class FirstScreen(val game: Main) : KtxScreen {
         stage.draw()
     }
 
-    override fun resize(width: Int, height: Int) {
+    override fun resize(width: Int, height: Int) //if the phone rotates the game camera matches new window dimensions while keeping the correct aspect ratio
+    {
         viewport.update(width, height)
         stage.viewport.update(width, height, true)
+    }
+
+    override fun dispose() //deletes memory to stop leaks
+    {
+
+        batch.dispose()
+        playerTexture.dispose()
+        player2Texture.dispose()
+        padBg.dispose()
+        padKnob.dispose()
+        levelManager.dispose()
+        stage.dispose()
+        networkClient.dispose()
     }
 
     override fun show() {}
     override fun pause() {}
     override fun resume() {}
     override fun hide() {}
-
-    override fun dispose() {
-        batch.dispose()
-        playerTexture.dispose()
-        levelManager.dispose()
-        stage.dispose()
-        networkClient.dispose()
-    }
 }

@@ -8,8 +8,9 @@ enum class Team
 {
     BLUE, ORANGE;
 
-    companion object 
+    companion object
     {
+        //helper to convert network IDs 0 or 1 back into Team types.
         fun fromInt(value: Int) = entries.getOrNull(value) ?: BLUE
     }
 }

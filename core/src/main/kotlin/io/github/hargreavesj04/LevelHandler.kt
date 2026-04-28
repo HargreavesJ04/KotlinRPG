@@ -12,10 +12,12 @@ class LevelHandler
     private val map: TiledMap = TmxMapLoader().load("Maps/MainMap.tmx")
     private val mapRenderer = OrthogonalTiledMapRenderer(map)
 
+    // a list of rectangles that represent solid walls for the client-side collision check
     val walls = mutableListOf<Rectangle>()
 
     init
     {
+        //checking object layer walls from tiled
         val wallLayer = map.layers.get("Walls")
         if (wallLayer != null) {
             for (mapObject in wallLayer.objects)
@@ -28,6 +30,7 @@ class LevelHandler
         }
     }
 
+    //tells the renderer which part of the map to draw based on the players camera
     fun render(camera: OrthographicCamera)
     {
         mapRenderer.setView(camera)

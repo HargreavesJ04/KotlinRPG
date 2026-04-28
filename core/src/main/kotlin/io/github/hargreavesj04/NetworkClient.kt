@@ -7,7 +7,8 @@ import java.util.concurrent.ConcurrentHashMap
 
 class NetworkClient
 {
-
+    // Using ConcurrentHashMap because networking runs on a separate thread;
+    // this prevents crashes when the render loop reads while the network thread writes.
     val client: Client = Client()
     val networkPlayers = ConcurrentHashMap<Int, PositionUpdatePacket>()
 
@@ -15,7 +16,7 @@ class NetworkClient
     {
         client.kryo.register(MoveInputPacket::class.java)
         client.kryo.register(PositionUpdatePacket::class.java)
-        client.start()
+        client.start() //background thread for handling buffers
 
         client.addListener(object : Listener() {
             override fun connected(connection: Connection?) {
@@ -26,6 +27,7 @@ class NetworkClient
                 println("Disconnected from the server.")
             }
 
+            //update the map so the firstscreen can draw the players
             override fun received(connection: Connection?, `object`: Any?) {
                 if (`object` is PositionUpdatePacket) {
                     networkPlayers[`object`.playerId] = `object`
@@ -41,7 +43,7 @@ class NetworkClient
             client.connect(5000, "10.0.2.2", 54555, 54777)
         } catch (e: Exception)
         {
-            println("FAILED to connect: ${e.message}")
+            println("Failed to connect: ${e.message}")
         }
     }
 

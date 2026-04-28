@@ -1,10 +1,10 @@
-package io.github.HargreavesJ04
+package io.github.hargreavesj04
 
 import com.badlogic.gdx.math.Rectangle
 
 
 
-enum class TeamColor {
+enum class Team {
     BLUE, ORANGE;
 
     companion object {
@@ -15,7 +15,7 @@ enum class TeamColor {
 
 
 
-class Player(var x: Float, var y: Float, val team: TeamColor) {
+class Player(var x: Float, var y: Float, val team: Team) {
     val size = 16f
     val speed = 100f
 

@@ -19,7 +19,7 @@
         tools:ignore="UnusedAttribute"
         android:theme="@style/GdxTheme">
         <activity
-            android:name="io.github.HargreavesJ04.android.AndroidLauncher"
+            android:name="io.github.hargreavesj04.android.AndroidLauncher"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout"

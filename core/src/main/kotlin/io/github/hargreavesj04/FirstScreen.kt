@@ -1,4 +1,4 @@
-package io.github.HargreavesJ04
+package io.github.hargreavesj04
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
@@ -15,26 +15,26 @@ import ktx.app.KtxScreen
 
 class FirstScreen(val game: Main) : KtxScreen {
 
-    //utils
+
     private val camera = OrthographicCamera()
     private val viewport = FitViewport(400f, 200f, camera)
     private val batch = SpriteBatch()
     private val stage = Stage(ScreenViewport())
 
-    //Networking
+
     private val networkClient = NetworkClient()
 
-    //Game state
-    private val levelManager = LevelHandler()
-    private val player = Player(x = 100f, y = 100f, TeamColor.BLUE)
 
-    //textures
+    private val levelManager = LevelHandler()
+    private val player = Player(x = 100f, y = 100f, Team.BLUE)
+
+
     private val playerTexture = Texture("Textures/player.png")
     private val player2Texture = Texture("Textures/Player2.png")
     private val padBg = Texture("Textures/Pan_Blue_Circle.png")
     private val padKnob = Texture("Textures/HealthPotion.png")
 
-    //UI
+
     private val touchpad = createTouchpad()
 
     init // Initializes UI input and starts the background server connection
@@ -92,16 +92,16 @@ class FirstScreen(val game: Main) : KtxScreen {
 
 
         //draws player with the correct texture and properties
-        val myColor = TeamColor.fromInt(myServerPos?.PlayerTextureID ?: 0)
-        val myTex = if (myColor == TeamColor.ORANGE) player2Texture else playerTexture
+        val myColor = Team.fromInt(myServerPos?.PlayerTextureID ?: 0)
+        val myTex = if (myColor == Team.ORANGE) player2Texture else playerTexture
         batch.draw(myTex, player.x, player.y, player.size, player.size)
 
         for (netPlayer in networkClient.networkPlayers.values)
         {
             if (netPlayer.playerId != networkClient.client.id)
             {
-                val otherColor = TeamColor.fromInt(netPlayer.PlayerTextureID)
-                val otherTex = if (otherColor == TeamColor.ORANGE) player2Texture else playerTexture
+                val otherColor = Team.fromInt(netPlayer.PlayerTextureID)
+                val otherTex = if (otherColor == Team.ORANGE) player2Texture else playerTexture
                 batch.draw(otherTex, netPlayer.x, netPlayer.y, player.size, player.size)
             }
         }

@@ -1,4 +1,4 @@
-package io.github.HargreavesJ04
+package io.github.hargreavesj04
 
 import com.badlogic.gdx.Game
 

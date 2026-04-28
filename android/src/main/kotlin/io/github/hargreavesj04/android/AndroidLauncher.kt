@@ -1,10 +1,10 @@
-package io.github.HargreavesJ04.android
+package io.github.hargreavesj04.android
 
 import android.os.Bundle
 
 import com.badlogic.gdx.backends.android.AndroidApplication
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
-import io.github.HargreavesJ04.Main
+import io.github.hargreavesj04.Main
 
 /** Launches the Android application. */
 class AndroidLauncher : AndroidApplication() {

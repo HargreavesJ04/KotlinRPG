@@ -4,11 +4,12 @@ import com.badlogic.gdx.math.Rectangle
 
 
 
-enum class Team {
+enum class Team
+{
     BLUE, ORANGE;
 
-    companion object {
-
+    companion object 
+    {
         fun fromInt(value: Int) = entries.getOrNull(value) ?: BLUE
     }
 }

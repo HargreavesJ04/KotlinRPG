@@ -18,8 +18,10 @@ class LevelHandler
     {
         val wallLayer = map.layers.get("Walls")
         if (wallLayer != null) {
-            for (mapObject in wallLayer.objects) {
-                if (mapObject is RectangleMapObject) {
+            for (mapObject in wallLayer.objects)
+            {
+                if (mapObject is RectangleMapObject)
+                {
                     walls.add(mapObject.rectangle)
                 }
             }

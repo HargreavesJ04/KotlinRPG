@@ -13,7 +13,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import ktx.app.KtxScreen
 
-class FirstScreen(val game: Main) : KtxScreen {
+class FirstScreen(val game: Main) : KtxScreen
+{
 
 
     private val camera = OrthographicCamera()
@@ -49,7 +50,7 @@ class FirstScreen(val game: Main) : KtxScreen {
 
     private fun createTouchpad(): Touchpad
     {
-        val customTouchpadStyle = TouchpadStyle().apply {
+        val customTouchpadStyle = TouchpadStyle().apply{
 
             background = TextureRegionDrawable(padBg)
             knob = TextureRegionDrawable(padKnob)

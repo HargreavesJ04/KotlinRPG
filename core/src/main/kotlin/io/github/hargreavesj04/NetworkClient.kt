@@ -5,12 +5,14 @@ import com.esotericsoftware.kryonet.Connection
 import com.esotericsoftware.kryonet.Listener
 import java.util.concurrent.ConcurrentHashMap
 
-class NetworkClient {
+class NetworkClient
+{
 
     val client: Client = Client()
     val networkPlayers = ConcurrentHashMap<Int, PositionUpdatePacket>()
 
-    init {
+    init
+    {
         client.kryo.register(MoveInputPacket::class.java)
         client.kryo.register(PositionUpdatePacket::class.java)
         client.start()
@@ -32,15 +34,19 @@ class NetworkClient {
         })
     }
 
-    fun connectToServer() {
-        try {
+    fun connectToServer()
+    {
+        try
+        {
             client.connect(5000, "10.0.2.2", 54555, 54777)
-        } catch (e: Exception) {
+        } catch (e: Exception)
+        {
             println("FAILED to connect: ${e.message}")
         }
     }
 
-    fun dispose() {
+    fun dispose()
+    {
         client.stop()
     }
 }

@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.viewport.FitViewport
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import ktx.app.KtxScreen
-import kotlin.math.abs
 
 class FirstScreen(val game: Main) : KtxScreen
 {
@@ -67,7 +66,7 @@ class FirstScreen(val game: Main) : KtxScreen
         val inputX = touchpad.knobPercentX
         val inputY = touchpad.knobPercentY
 
-        if (abs(inputX) > 0.05f || abs(inputY) > 0.05f) //deadzone that wont move if the stick moves below 5%
+        if (Math.abs(inputX) > 0.05f || Math.abs(inputY) > 0.05f) //deadzone that wont move if the stick moves below 5%
         {
             networkClient.client.sendUDP(MoveInputPacket(inputX, inputY)) //tells the server that the player is trying to move
         }

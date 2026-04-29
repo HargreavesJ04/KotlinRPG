@@ -5,10 +5,21 @@ import com.badlogic.gdx.Game
 
 class Main : Game()
 {
+
+    lateinit var networkClient: NetworkClient
+
     override fun create()
     {
-
-        setScreen(FirstScreen(this))
+        networkClient = NetworkClient(this)
+        setScreen(MenuScreen(this))
     }
+
+    override fun dispose()
+    {
+        super.dispose()
+        networkClient.dispose()
+    }
+
+
 }
 

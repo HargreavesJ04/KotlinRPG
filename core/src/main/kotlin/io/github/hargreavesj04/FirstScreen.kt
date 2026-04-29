@@ -24,7 +24,7 @@ class FirstScreen(val game: Main) : KtxScreen
     private val stage = Stage(ScreenViewport())
 
 
-    private val networkClient = NetworkClient()
+    private val networkClient = game.networkClient
 
 
     private val levelManager = LevelHandler()
@@ -44,9 +44,6 @@ class FirstScreen(val game: Main) : KtxScreen
         stage.addActor(touchpad)
         Gdx.input.inputProcessor = stage
 
-        Thread {
-            networkClient.connectToServer()
-        }.start()
     }
 
     private fun createTouchpad(): Touchpad
@@ -121,7 +118,6 @@ class FirstScreen(val game: Main) : KtxScreen
 
     override fun dispose() //deletes memory to stop leaks
     {
-
         batch.dispose()
         playerTexture.dispose()
         player2Texture.dispose()
@@ -129,7 +125,6 @@ class FirstScreen(val game: Main) : KtxScreen
         padKnob.dispose()
         levelManager.dispose()
         stage.dispose()
-        networkClient.dispose()
     }
 
     override fun show() {}
